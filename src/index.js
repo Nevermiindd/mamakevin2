@@ -1,4 +1,4 @@
-const config = require('dotenv')
+const { config } = require('dotenv')
 const { Client, GatewayIntentBits, Routes, Collection } = require('discord.js')
 const { REST } = require('@discordjs/rest')
 const fetch = require('isomorphic-fetch')
@@ -59,10 +59,18 @@ const rest = new REST({ version: '10' }).setToken(TOKEN)
 
 client.on('ready', async () => {
     console.log(`${client.user.tag} has logged in!`)
+//    client.user.setPresence({
+//        activities: [{ name: "Habbo", type: ActivityType.Playing }]
+//    })
 })
 
 client.on('guildMemberAdd', async member => {
     await member.roles.add(process.env.JOIN_ROLE)
+
+    const channel = member.guild.channels.get(process.env.WELCOME_CHANNEL)
+
+    channel.send(`Welkom bij ${member.guild.name}, <@${member.id}> \n \nWil je bij ons team ga naar <#${process.env.BOT_COMMANDS}> en type /apply \n \nVeel plezier!`)
+
 })
 
 client.on('interactionCreate', async (interaction) => {
